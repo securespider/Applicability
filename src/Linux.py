@@ -1,11 +1,13 @@
 import subprocess
 from subprocess import PIPE
 import powertop
+import json
+
 import getpass
 from time import sleep
 
 INIT_PRINT = "Here is all your processes, please input the pid of the specific process"
-
+# powertop = powertop.Powertop()
 """
 Function that runs the Powertop command and extracts information from it for a specific application
 """
@@ -20,13 +22,9 @@ def execute():
     number = int(number)
     # password = getpass.getpass("Sudo password: ")
     password = "I!l2m3t4"
-    powertop = subprocess.Popen("sudo -S powertop".split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    print(password)
-    powertop.communicate(password.encode())
-    print(powertop.communicate())
-    while True:
-        sleep(5)
-        print(powertop.communicate())
+    measures = powertop.Powertop().get_measures(time=1)
+
+    print(json.dumps(measures['Device Power Report'], indent=4))
 
     # stdout, stderr = powertop.communicate()
     # while stdout:
